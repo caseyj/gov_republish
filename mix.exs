@@ -25,7 +25,8 @@ defmodule GovRepublish.MixProject do
       {:date_time_parser, "~> 1.2.0"},
       {:mock, "~> 0.3.0", only: :test},
       {:oauth2, "~> 2.0"},
-      {:hackney, "~> 1.18"}
+      {:hackney, "~> 1.18"},
+      {:httpoison, "~> 2.0"}
     ]
   end
 end
