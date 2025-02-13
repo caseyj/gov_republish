@@ -1,4 +1,4 @@
-defmodule BluestkyClientTest do
+defmodule BlueskyClientTest do
 require Mock
 
   use ExUnit.Case
