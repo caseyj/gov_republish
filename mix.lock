@@ -1,3 +1,5 @@
 %{
+  "date_time_parser": {:hex, :date_time_parser, "1.2.0", "3d5a816b91967f51e0f94dcb16a34b2cb780f22cd48931779e81d72f7d3eadb1", [:mix], [{:kday, "~> 1.0", [hex: :kday, repo: "hexpm", optional: false]}], "hexpm", "0cf09ada9f42c0b3bfba02dc0ea2e4b4d2f543d9d2bf99b831a29e6b4a4160e5"},
+  "kday": {:hex, :kday, "1.1.0", "64efac85279a12283eaaf3ad6f13001ca2dff943eda8c53288179775a8c057a0", [:mix], [{:ex_doc, "~> 0.21", [hex: :ex_doc, repo: "hexpm", optional: true]}], "hexpm", "69703055d63b8d5b260479266c78b0b3e66f7aecdd2022906cd9bf09892a266d"},
   "saxy": {:hex, :saxy, "1.6.0", "02cb4e9bd045f25ac0c70fae8164754878327ee393c338a090288210b02317ee", [:mix], [], "hexpm", "ef42eb4ac983ca77d650fbdb68368b26570f6cc5895f0faa04d34a6f384abad3"},
 }

@@ -16,4 +16,12 @@ defmodule Utils do
   def get_account_name(str_components) do
     elem(str_components, 2)
   end
+
+  def parse_date(date_str) do
+    {status, result} = DateTimeParser.parse(date_str)
+    case status do
+      :ok -> Calendar.strftime(result, "%s")
+      :error ->  IO.puts(result)
+    end
+  end
 end

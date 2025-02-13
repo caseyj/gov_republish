@@ -31,7 +31,7 @@ defmodule TweetHandler do
         updated_collection = case current_tag do
           "title" -> Map.put(current_collection, "content", content)
           "dc:creator" -> Map.put(current_collection, "author", content)
-          "pubDate" -> Map.put(current_collection, "publish_timestamp", content)
+          "pubDate" -> Map.put(current_collection, "publish_timestamp", Utils.parse_date(content))
           "guid" -> Map.put(current_collection, "post_id", Utils.get_id(content))
           _ -> current_collection
         end

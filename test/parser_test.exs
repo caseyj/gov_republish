@@ -82,13 +82,13 @@ defmodule ParserTest do
       %{
         "author"=>"@JCParking",
         "content"=>"Alternate side of the street parking / street sweeping is postponed today, Monday, February 10, 2025. Normal enforcement continues the following day.",
-        "publish_timestamp"=> "Mon, 10 Feb 2025 12:00:26 GMT",
+        "publish_timestamp"=> "1739188826",
         "post_id"=>"JCParking_1888920962810195985"
       },
       %{
         "author"=>"@JCParking",
         "content"=>"Alternate side of the street parking (street sweeping) is suspended Tuesday and Wednesday, February 11-12, 2025. Enforcement regulations will resume the next day.",
-        "publish_timestamp"=> "Tue, 11 Feb 2025 12:00:31 GMT",
+        "publish_timestamp"=> "1739275231",
         "post_id"=>"JCParking_1889283372192514151"
         }
 
