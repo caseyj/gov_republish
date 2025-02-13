@@ -22,7 +22,10 @@ defmodule GovRepublish.MixProject do
   defp deps do
     [
       {:saxy, "~> 1.6"},
-      {:date_time_parser, "~> 1.2.0"}
+      {:date_time_parser, "~> 1.2.0"},
+      {:mock, "~> 0.3.0", only: :test},
+      {:oauth2, "~> 2.0"},
+      {:hackney, "~> 1.18"}
     ]
   end
 end

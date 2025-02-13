@@ -1,7 +1,10 @@
 defmodule Utils do
-
   def get_id(str) do
-    components = String.replace(str, "#m", "", trim: true) |> String.split("/", trim: true) |> List.to_tuple()
+    components =
+      String.replace(str, "#m", "", trim: true)
+      |> String.split("/", trim: true)
+      |> List.to_tuple()
+
     if tuple_size(components) != 5 do
       ""
     else
@@ -19,9 +22,11 @@ defmodule Utils do
 
   def parse_date(date_str) do
     {status, result} = DateTimeParser.parse(date_str)
+
     case status do
       :ok -> Calendar.strftime(result, "%s")
-      :error ->  IO.puts(result)
+      :error -> IO.puts(result)
     end
   end
+
 end
