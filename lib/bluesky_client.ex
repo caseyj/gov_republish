@@ -11,4 +11,18 @@ defmodule BlueskyClient do
       "$type"=> "app.bsky.feed.post",
     }
   end
+
+  def post(log_in_data, post_data) do
+    headers = %{
+      "Authorization"=> "Bearer #{Map.get(log_in_data, "accessJwt")}",
+      "content-type"=>"application/json"
+    }
+    post_data_ammended = %{"repo"=> Map.get(log_in_data, "did"), "collection"=>"app.bsky.feed.post", "record"=>post_data}
+    HTTPoison.post!(
+      "https://polypore.us-west.host.bsky.network/xrpc/com.atproto.repo.createRecord",
+      Poison.encode!(post_data_ammended),
+      headers
+    )
+  end
+
 end

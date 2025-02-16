@@ -36,4 +36,12 @@ require Mock
     end
   end
 
+  test "Arbitrary data" do
+    data = %{
+      "text"=> "hello, my first post via api in ELIXIR #botWriting",
+      "createdAt" => DateTime.utc_now() |> DateTime.to_iso8601(),
+      "$type"=> "app.bsky.feed.post",
+    }
+  end
+
 end

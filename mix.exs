@@ -26,7 +26,9 @@ defmodule GovRepublish.MixProject do
       {:mock, "~> 0.3.0", only: :test},
       {:oauth2, "~> 2.0"},
       {:hackney, "~> 1.18"},
-      {:httpoison, "~> 2.0"}
+      {:httpoison, "~> 2.0"},
+      {:poison, "~> 6.0"},
+      {:joken, "~> 2.6.2"}
     ]
   end
 end
