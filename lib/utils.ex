@@ -29,4 +29,10 @@ defmodule Utils do
     end
   end
 
+  def url_or_file(string) do
+    case URI.parse(string) do
+      %URI{scheme: nil, path: path} -> {:filepath, path}
+      %URI{scheme: _scheme, path: _path} -> {:url, string}
+    end
+  end
 end

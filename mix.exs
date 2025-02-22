@@ -28,7 +28,9 @@ defmodule GovRepublish.MixProject do
       {:hackney, "~> 1.18"},
       {:httpoison, "~> 2.0"},
       {:poison, "~> 6.0"},
-      {:joken, "~> 2.6.2"}
+      {:joken, "~> 2.6.2"},
+      {:ecto_sqlite3, "~> 0.17"},
+      {:oban, "~> 2.19"}
     ]
   end
 end
