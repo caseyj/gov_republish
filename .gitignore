@@ -33,3 +33,6 @@ infra/nitter/nitter-data
 
 # SQLite files
 gov_republish_repo*
+
+# any env files
+*.env
