@@ -24,4 +24,12 @@ gov_republish-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
+
+# the data directory for test data
 data/*
+
+# nitter data files
+infra/nitter/nitter-data
+
+# SQLite files
+gov_republish_repo*
