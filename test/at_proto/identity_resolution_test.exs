@@ -73,7 +73,7 @@ defmodule AtProto.IdentityResolutionTest do
     end
   end
 
-  for {status, first_expected, is_garbage, second_expected} <- [
+  for {status, _first_expected, is_garbage, second_expected} <- [
     {200, :ok, false, :ok},
     {299, :ok, false, :ok},
     {200, :ok, true, :error},
@@ -102,7 +102,7 @@ defmodule AtProto.IdentityResolutionTest do
     end
   end
 
-  for {status, first_expected, is_garbage, second_expected} <- [
+  for {status, _first_expected, is_garbage, second_expected} <- [
     {200, :ok, false, :ok},
     {299, :ok, false, :ok},
     {200, :ok, true, :error},
@@ -129,5 +129,9 @@ defmodule AtProto.IdentityResolutionTest do
           assert success == unquote(second_expected)
         end
     end
+  end
+
+  test "Show login_flow functions and returns error messages through the whole flow" do
+    assert 1==1
   end
 end

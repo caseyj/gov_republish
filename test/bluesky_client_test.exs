@@ -1,5 +1,4 @@
 defmodule BlueskyClientTest do
-  alias ElixirMake.Downloader.Httpc
   require Mock
 
   use ExUnit.Case

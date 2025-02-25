@@ -7,3 +7,4 @@ config :gov_republish, GovRepublish.Repo,
   hostname: "localhost"
 
 config :gov_republish, ecto_repos: [GovRepublish.Repo]
+import_config "#{config_env()}.exs"

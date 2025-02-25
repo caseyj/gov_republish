@@ -27,8 +27,9 @@ defmodule RssClient do
   end
 
   def add_records_to_db(rss_data) do
-    Enum.reduce(elem(Parser.get_data(rss_data), 1), [], fn datum, acc ->
-      acc ++ [SqliteClient.insert(GovRepublish.RssPost, %GovRepublish.RssPost{}, datum)]
+    {:ok, data} = Parser.get_data(rss_data)
+    Enum.reduce(data, [], fn datum, acc ->
+      acc++[SqliteClient.insert(GovRepublish.RssPost, %GovRepublish.RssPost{}, datum)]
     end)
   end
 end

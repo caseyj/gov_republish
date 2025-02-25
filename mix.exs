@@ -7,7 +7,9 @@ defmodule GovRepublish.MixProject do
       version: "0.1.0",
       elixir: "~> 1.16",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      elixirc_paths: elixirc_paths(Mix.env()),
+      aliases: aliases()
     ]
   end
 
@@ -30,4 +32,14 @@ defmodule GovRepublish.MixProject do
       {:oban, "~> 2.19"}
     ]
   end
+
+  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(_), do: ["lib"]
+
+  defp aliases do
+    [
+     test: ["ecto.create --quiet", "ecto.migrate", "test"]
+    ]
+  end
+
 end
