@@ -3,10 +3,14 @@ defmodule GovRepublish.Repo.Migrations.CreateRssPost do
 
   def change do
     create table(:rss_post) do
-      add :content, :string
+      add :content, :string, size: 300
       add :author, :string
-      add :publish_timestamp,  :utc_datetime
+      add :publish_timestamp, :utc_datetime
       add :post_id, :string
+      add :posted, :boolean, default: false
+
+      timestamps()
     end
+    create unique_index(:rss_post, [:post_id])
   end
 end

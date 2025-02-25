@@ -9,7 +9,7 @@ defmodule GovRepublish.Application do
   def start(_type, _args) do
     children = [
       # Starts a worker by calling: DataCollector.Worker.start_link(arg)
-      Friends.Repo,
+      GovRepublish.Repo
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

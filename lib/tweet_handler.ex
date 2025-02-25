@@ -37,7 +37,11 @@ defmodule TweetHandler do
               Map.put(current_collection, "author", content)
 
             "pubDate" ->
-              Map.put(current_collection, "publish_timestamp", elem(DateTimeParser.parse_datetime(content),1)) # TODO: needs a control flow here to make sure the parse is correct
+              Utils.parse_date_to_map(
+                content,
+                current_collection,
+                "publish_timestamp"
+              )
 
             "guid" ->
               Map.put(current_collection, "post_id", Utils.get_id(content))

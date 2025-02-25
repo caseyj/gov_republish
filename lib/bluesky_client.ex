@@ -1,11 +1,20 @@
 defmodule BlueskyClient do
-  def format_post_text(post_data) do
-    {:ok, timestamp} =
-      Map.get(post_data, "publish_timestamp") |> String.to_integer() |> DateTime.from_unix()
+  @moduledoc """
+  Helper functions that will format data and execute calls against bluesky.
+  """
 
-    "Post by #{Map.get(post_data, "author")} made on #{timestamp}\n\n#{Map.get(post_data, "content")}"
+  @doc """
+  Formats a text post given a map with fields `publish_timestamp`, `content`, and `author`.
+
+  Returns a string with data in it
+  """
+  def format_post_text(post_data) do
+    "Post by #{Map.get(post_data, "author")} made on #{Map.get(post_data, "publish_timestamp")}\n\n#{Map.get(post_data, "content")}"
   end
 
+  @doc """
+  Produces the post document using the input post data
+  """
   def produce_post(post_data) do
     %{
       "text" => format_post_text(post_data),
@@ -14,6 +23,9 @@ defmodule BlueskyClient do
     }
   end
 
+  @doc """
+  Performs the actual post behavior against bluesky with working log in data and the data to post
+  """
   def post(log_in_data, post_data) do
     headers = %{
       "Authorization" => "Bearer #{Map.get(log_in_data, "accessJwt")}",
@@ -25,11 +37,12 @@ defmodule BlueskyClient do
       "collection" => "app.bsky.feed.post",
       "record" => post_data
     }
-
-    HTTPoison.post!(
-      "#{AtProto.IdentityResolution.get_service(Map.get(log_in_data, "didDoc"))}/xrpc/com.atproto.repo.createRecord",
+    url = "#{AtProto.IdentityResolution.get_service(Map.get(log_in_data, "didDoc"))}/xrpc/com.atproto.repo.createRecord"
+    {success, response} = HTTPoison.post(
+      url,
       Poison.encode!(post_data_ammended),
       headers
     )
+    Utils.decide_http_success(url, {success, response})
   end
 end

@@ -1,4 +1,16 @@
 defmodule Utils do
+  @moduledoc """
+  General utilities for the GovRepublish project
+  """
+
+  @doc """
+  A utility to get the components of a unique post ID from an RSS document.
+
+  ## Examples
+
+     iex> get_id("https://nitter.privacydev.net/JCParking/status/1889283372192514151#m")
+     "JCParking_1889283372192514151"
+  """
   def get_id(str) do
     components =
       String.replace(str, "#m", "", trim: true)
@@ -8,31 +20,77 @@ defmodule Utils do
     if tuple_size(components) != 5 do
       ""
     else
-      "#{get_account_name(components)}_#{get_id_number(components)}"
+      "#{_get_account_name(components)}_#{_get_id_number(components)}"
     end
   end
 
-  def get_id_number(str_components) do
+  def _get_id_number(str_components) do
     elem(str_components, 4)
   end
 
-  def get_account_name(str_components) do
+  def _get_account_name(str_components) do
     elem(str_components, 2)
   end
 
-  def parse_date(date_str) do
-    {status, result} = DateTimeParser.parse(date_str)
+  @doc """
+  Parses a string based date into a useable datetime data structure.
 
+  ## Examples
+
+      iex> parse_date_to_map("Mon, 10 Feb 2025 18:28:16 GMT", %{}, "publish_timestamp")
+      %{"publish_timestamp"=>~U[2025-02-10 18:28:16Z]}
+
+      iex> Utils.parse_date_to_map("Not a Date", %{}, "publish_timestamp")
+      %{:error=>["Unable to parse date for input \"Not a Date\", resulting error: \"Could not parse \"Not a Date\"\""]}
+  """
+  def parse_date_to_map(date_str, collecting_map, map_key) do
+    {status, result} = DateTimeParser.parse_datetime(date_str)
+    potential_error = "Unable to parse date for input \"#{date_str}\", resulting error: \"#{result}\""
     case status do
-      :ok -> Calendar.strftime(result, "%s")
-      :error -> IO.puts(result)
+      :ok -> Map.put(collecting_map, map_key, result)
+      :error -> Map.update(collecting_map, :error, [potential_error], fn data ->
+        data ++ [potential_error]
+      end)
     end
   end
 
+  @spec url_or_file(binary() | URI.t()) ::
+          {:filepath, nil | binary()} | {:url, binary() | URI.t()}
+  @doc """
+  Utility which allows us to quickly determine if a provided string is a filepath or a URI
+  Usually only used in data source functions, we are expecting its only these two possibilities for now
+
+  Returns `{:filepath, "/example/file/path.txt"}|{:url, "http://example.com"}`
+
+  ## Examples
+
+      iex> Utils.url_or_file("/example/file/path.txt")
+      {:filepath, "/example/file/path.txt"}
+
+      iex> Utils.url_or_file("http://example.com")
+      {:url, "http://example.com"}
+  """
   def url_or_file(string) do
     case URI.parse(string) do
       %URI{scheme: nil, path: path} -> {:filepath, path}
       %URI{scheme: _scheme, path: _path} -> {:url, string}
+    end
+  end
+
+  @doc """
+  Decides whether an  HTTP request was successful.
+
+  A 200-299 response code will give an :ok, 300+ will give :error
+  """
+  def decide_http_success(endpoint,{ status, response}) do
+    case {status, response} do
+      {:ok, response} when response.status_code >= 200 and response.status_code < 300  -> {:ok, response.body}
+      {:ok, response} when response.status_code >= 300 -> {
+        :error,
+        "Error requesting data from URL #{endpoint} with non 2XX status code #{response.status_code} and content \"#{response.body}\""
+      }
+
+      {:error, %HTTPoison.Error{reason: reason}} -> {:error, "Error retrieving data from src #{endpoint}, error msg \"#{reason}\""}
     end
   end
 end

@@ -38,7 +38,7 @@ defmodule ParserTest do
                   "author" => "@JCParking",
                   "content" =>
                     "Alternate side of the street parking (street sweeping) is suspended Tuesday and Wednesday, February 11-12, 2025. Enforcement regulations will resume the next day.",
-                  "publish_timestamp" => "1739275231",
+                  "publish_timestamp" => ~U[2025-02-11 12:00:31Z],
                   "post_id" => "JCParking_1889283372192514151"
                 }
               ]}
@@ -90,14 +90,14 @@ defmodule ParserTest do
                   "author" => "@JCParking",
                   "content" =>
                     "Alternate side of the street parking / street sweeping is postponed today, Monday, February 10, 2025. Normal enforcement continues the following day.",
-                  "publish_timestamp" => "1739188826",
+                  "publish_timestamp" => ~U[2025-02-10 12:00:26Z],
                   "post_id" => "JCParking_1888920962810195985"
                 },
                 %{
                   "author" => "@JCParking",
                   "content" =>
                     "Alternate side of the street parking (street sweeping) is suspended Tuesday and Wednesday, February 11-12, 2025. Enforcement regulations will resume the next day.",
-                  "publish_timestamp" => "1739275231",
+                  "publish_timestamp" => ~U[2025-02-11 12:00:31Z],
                   "post_id" => "JCParking_1889283372192514151"
                 }
               ]}

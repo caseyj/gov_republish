@@ -24,11 +24,8 @@ defmodule GovRepublish.MixProject do
       {:saxy, "~> 1.6"},
       {:date_time_parser, "~> 1.2.0"},
       {:mock, "~> 0.3.0", only: :test},
-      {:oauth2, "~> 2.0"},
-      {:hackney, "~> 1.18"},
       {:httpoison, "~> 2.0"},
       {:poison, "~> 6.0"},
-      {:joken, "~> 2.6.2"},
       {:ecto_sqlite3, "~> 0.17"},
       {:oban, "~> 2.19"}
     ]

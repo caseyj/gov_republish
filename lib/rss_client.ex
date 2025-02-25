@@ -1,16 +1,21 @@
 defmodule RssClient do
 
+  @doc """
+  Helper function that handles getting an RSS document from a URL.
+
+  Will provide an :ok for a 2XX error message, and an :error for others
+  """
   def _get_rss_feed_url(endpoint) do
-    case HTTPoison.get(endpoint) do
-      {:ok, %HTTPoison.Response{status_code: 200, body: body}} -> {:ok, body}
-      _ -> {:error, "Error retrieving RSS feed from src #{endpoint}"}
-    end
+    Utils.decide_http_success(endpoint, HTTPoison.get(endpoint))
   end
 
+  @doc """
+  Gets the RSS data from a file and returns a tuple with the success status and data as a string.
+  """
   def _get_rss_feed_file(file_path) do
     case File.read(file_path) do
-      {:ok,  body} -> {:ok, body}
-      _ -> {:error, "Error retrieving RSS feed from src #{file_path}"}
+      {:ok, body} -> {:ok, body}
+      {:error, msg} -> {:error, "Error retrieving RSS feed from src #{file_path}, error message: \"#{msg}\""}
     end
   end
 
@@ -22,9 +27,8 @@ defmodule RssClient do
   end
 
   def add_records_to_db(rss_data) do
-    Enum.reduce(elem(Parser.get_data(rss_data),1), [], fn datum, acc ->
+    Enum.reduce(elem(Parser.get_data(rss_data), 1), [], fn datum, acc ->
       acc ++ [SqliteClient.insert(GovRepublish.RssPost, %GovRepublish.RssPost{}, datum)]
     end)
   end
-
 end
