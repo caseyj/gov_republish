@@ -12,5 +12,14 @@ defmodule GovRepublish.Repo.Migrations.CreateRssPost do
       timestamps()
     end
     create unique_index(:rss_post, [:post_id])
+
+    create table(:created_bsky_record) do
+      add :uri, :string, null: false
+      add :cid, :string, null: false
+      add :rss_post_id,
+        references(:rss_post, on_delete: :delete_all),
+        null: false
+      timestamps()
+    end
   end
 end

@@ -48,4 +48,9 @@ defmodule UtilsTest do
       end
     end
   end
+
+  test "Show Utils.map_append_lists functions properly" do
+    assert Utils.map_append_lists(%{:a=>[]}, :a, [1]) == %{:a=>[1]}
+    assert Utils.map_append_lists(%{:a=>[1,2]}, :a, [4,5]) == %{:a=>[1,2,4,5]}
+  end
 end

@@ -7,7 +7,7 @@ defmodule GovRepublish.RssPost do
     field(:publish_timestamp, :utc_datetime)
     field(:post_id, :string)
     field(:posted, :boolean, default: false)
-
+    has_one :bsky_post, GovRepublish.CreatedBskyRecord
     timestamps()
   end
 
