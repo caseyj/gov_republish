@@ -37,12 +37,17 @@ defmodule BlueskyClient do
       "collection" => "app.bsky.feed.post",
       "record" => post_data
     }
-    url = "#{AtProto.IdentityResolution.get_service(Map.get(log_in_data, "didDoc"))}/xrpc/com.atproto.repo.createRecord"
-    {success, response} = HTTPoison.post(
-      url,
-      Poison.encode!(post_data_ammended),
-      headers
-    )
+
+    url =
+      "#{AtProto.IdentityResolution.get_service(Map.get(log_in_data, "didDoc"))}/xrpc/com.atproto.repo.createRecord"
+
+    {success, response} =
+      HTTPoison.post(
+        url,
+        Poison.encode!(post_data_ammended),
+        headers
+      )
+
     Utils.decide_http_success(url, {success, response})
   end
 end

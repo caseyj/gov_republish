@@ -1,6 +1,9 @@
 defmodule RssClientTest do
+  import Mock
+
   use ExUnit.Case
   use GovRepublish.RepoCase
+
 
   test "adding records to DB" do
     rss_data = """
@@ -40,9 +43,33 @@ defmodule RssClientTest do
       </channel>
       </rss>
     """
+
     RssClient.add_records_to_db(rss_data)
 
     assert Enum.count(GovRepublish.Repo.all(GovRepublish.RssPost)) == 2
+  end
+
+  test "Show _get_rss_feed_url() functions" do
+    with_mock HTTPoison,
+      get: fn _a -> {} end do
+        with_mock Utils,
+        decide_http_success: fn _a, _b -> {:ok, "hello"} end do
+          assert RssClient._get_rss_feed_url("hello") == {:ok, "hello"}
+        end
+      end
+  end
+
+  test "Show _get_rss_feed_file functions" do
+    assert {:ok, "hello"} == RssClient._get_rss_feed_file("test/test_data/test.txt")
+    assert RssClient._get_rss_feed_file("doesnotexist.txt") == {:error, "Error retrieving RSS feed from src doesnotexist.txt, error message: \"enoent\""}
+  end
+
+  test "Show get_rss_feed functions" do
+    with_mock HTTPoison,
+      get: fn _a -> {:ok, %HTTPoison.Response{status_code: 200, body: "hello"}} end do
+        assert {:ok, "hello"} == RssClient.get_rss_feed("http://0.0.0.0:8080")
+      end
+      assert {:ok, "hello"} == RssClient.get_rss_feed("test/test_data/test.txt")
   end
 
 end

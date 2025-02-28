@@ -45,12 +45,18 @@ defmodule Utils do
   """
   def parse_date_to_map(date_str, collecting_map, map_key) do
     {status, result} = DateTimeParser.parse_datetime(date_str)
-    potential_error = "Unable to parse date for input \"#{date_str}\", resulting error: \"#{result}\""
+
+    potential_error =
+      "Unable to parse date for input \"#{date_str}\", resulting error: \"#{result}\""
+
     case status do
-      :ok -> Map.put(collecting_map, map_key, result)
-      :error -> Map.update(collecting_map, :error, [potential_error], fn data ->
-        data ++ [potential_error]
-      end)
+      :ok ->
+        Map.put(collecting_map, map_key, result)
+
+      :error ->
+        Map.update(collecting_map, :error, [potential_error], fn data ->
+          data ++ [potential_error]
+        end)
     end
   end
 
@@ -77,20 +83,26 @@ defmodule Utils do
     end
   end
 
+  @spec decide_http_success(any(), {:error, map()} | {:ok, map()}) ::
+          {:error, <<_::64, _::_*8>>} | {:ok, any()}
   @doc """
   Decides whether an  HTTP request was successful.
 
   A 200-299 response code will give an :ok, 300+ will give :error
   """
-  def decide_http_success(endpoint,{ status, response}) do
+  def decide_http_success(endpoint, {status, response}) do
     case {status, response} do
-      {:ok, response} when response.status_code >= 200 and response.status_code < 300  -> {:ok, response.body}
-      {:ok, response} when response.status_code >= 300 -> {
-        :error,
-        "Error requesting data from URL #{endpoint} with non 2XX status code #{response.status_code} and content \"#{response.body}\""
-      }
+      {:ok, response} when response.status_code >= 200 and response.status_code < 300 ->
+        {:ok, response.body}
 
-      {:error, %HTTPoison.Error{reason: reason}} -> {:error, "Error retrieving data from src #{endpoint}, error msg \"#{reason}\""}
+      {:ok, response} when response.status_code >= 300 ->
+        {
+          :error,
+          "Error requesting data from URL #{endpoint} with non 2XX status code #{response.status_code} and content \"#{response.body}\""
+        }
+
+      {:error, %HTTPoison.Error{reason: reason}} ->
+        {:error, "Error retrieving data from src #{endpoint}, error msg \"#{reason}\""}
     end
   end
 

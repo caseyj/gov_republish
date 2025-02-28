@@ -53,33 +53,38 @@ defmodule AtProto.IdentityResolution do
   """
   def resolve_did_to_did_doc(did) do
     url = "https://plc.directory/#{did}"
-    {success, response} = Utils.decide_http_success(url,HTTPoison.get(url))
-    case {success, response}  do
-      {:ok, response} -> Poison.decode(response)
-      _ -> {success, response}
-    end
-  end
+    {success, response} = Utils.decide_http_success(url, HTTPoison.get(url))
 
-
-  @doc """
-  Performs the actual log in process using a username, password, and endpoint triplet.
-  """
-  def get_session_obj(username, pw, endpoint) do
-    url = "#{endpoint}/xrpc/com.atproto.server.createSession"
-    {success, response} =Utils.decide_http_success( url, HTTPoison.post(
-      url,
-      Poison.encode!(%{
-        "identifier" => "#{username}",
-        "password" => "#{pw}"
-      }),
-      %{"content-type" => "application/json"}
-    ))
     case {success, response} do
       {:ok, response} -> Poison.decode(response)
       _ -> {success, response}
     end
   end
 
+  @doc """
+  Performs the actual log in process using a username, password, and endpoint triplet.
+  """
+  def get_session_obj(username, pw, endpoint) do
+    url = "#{endpoint}/xrpc/com.atproto.server.createSession"
+
+    {success, response} =
+      Utils.decide_http_success(
+        url,
+        HTTPoison.post(
+          url,
+          Poison.encode!(%{
+            "identifier" => "#{username}",
+            "password" => "#{pw}"
+          }),
+          %{"content-type" => "application/json"}
+        )
+      )
+
+    case {success, response} do
+      {:ok, response} -> Poison.decode(response)
+      _ -> {success, response}
+    end
+  end
 
   @doc """
   Utility function to quickly get the service endpoint for an AtProto PDS

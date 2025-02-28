@@ -6,3 +6,5 @@ config :gov_republish, GovRepublish.Repo,
   password: "pass",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+config :gov_republish, Oban, testing: :manual

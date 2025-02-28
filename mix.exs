@@ -29,7 +29,8 @@ defmodule GovRepublish.MixProject do
       {:httpoison, "~> 2.0"},
       {:poison, "~> 6.0"},
       {:ecto_sqlite3, "~> 0.17"},
-      {:oban, "~> 2.19"}
+      {:oban, "~> 2.19"},
+      {:jason, "~> 1.4"}
     ]
   end
 
@@ -38,8 +39,7 @@ defmodule GovRepublish.MixProject do
 
   defp aliases do
     [
-     test: ["ecto.create --quiet", "ecto.migrate", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate", "test"]
     ]
   end
-
 end

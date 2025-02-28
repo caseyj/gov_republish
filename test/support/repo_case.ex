@@ -14,7 +14,6 @@ defmodule GovRepublish.RepoCase do
       import Ecto
       import Ecto.Query
       import GovRepublish.RepoCase
-
     end
   end
 

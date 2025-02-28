@@ -1,5 +1,4 @@
 defmodule BotflowTest do
-
   import Mock
   use ExUnit.Case
   use GovRepublish.RepoCase
@@ -45,48 +44,54 @@ defmodule BotflowTest do
   end
 
   test "Show get_most_recent_posts show posts are in order" do
-
     RssClient.add_records_to_db(rss_data())
     posts = List.to_tuple(Botflow.get_most_recent_posts("@JCParking"))
     assert elem(posts, 0).post_id == "JCParking_1889283372192514151"
     assert elem(posts, 1).post_id == "JCParking_1888920962810195985"
-
   end
 
   test "Show that only records that have not been uploaded are selected" do
     RssClient.add_records_to_db(rss_data())
     assert Enum.count(Botflow.get_most_recent_posts("@JCParking")) == 2
-    post  = GovRepublish.RssPost|> GovRepublish.Repo.get(1)
-    SqliteClient.update_record(post, %{:posted=>true})
+    post = GovRepublish.RssPost |> GovRepublish.Repo.get(1)
+    SqliteClient.update_record(post, %{:posted => true})
     posts = Botflow.get_most_recent_posts("@JCParking")
     assert Enum.count(posts) == 1
   end
 
   test "Show that update_successful_message inserts and links properly" do
     RssClient.add_records_to_db(rss_data())
-    post  = GovRepublish.RssPost|> GovRepublish.Repo.get(1)
-    input = {post, "{\"uri\":\"at://did:plc:u5cwb2mwiv2bfq53cjufe6yn/app.bsky.feed.post/3k4duaz5vfs2b\",\"cid\":\"bafyreibjifzpqj6o6wcq3hejh7y4z4z2vmiklkvykc57tw3pcbx3kxifpm\"}"}
+    post = GovRepublish.RssPost |> GovRepublish.Repo.get(1)
+
+    input =
+      {post,
+       "{\"uri\":\"at://did:plc:u5cwb2mwiv2bfq53cjufe6yn/app.bsky.feed.post/3k4duaz5vfs2b\",\"cid\":\"bafyreibjifzpqj6o6wcq3hejh7y4z4z2vmiklkvykc57tw3pcbx3kxifpm\"}"}
+
     Botflow.update_successful_message(input)
-    created_records = GovRepublish.CreatedBskyRecord|>GovRepublish.Repo.all()
+    created_records = GovRepublish.CreatedBskyRecord |> GovRepublish.Repo.all()
     assert Enum.count(created_records) == 1
     assert post.id == hd(created_records).rss_post_id
   end
 
   test "Show push_unpublished_messages goes through steps" do
     with_mock AtProto.IdentityResolution,
-      login_flow: fn _a,_b -> {:ok, %{}} end do
-        with_mock BlueskyClient,
-          [post: fn _c, _d -> {:ok, %HTTPoison.Response{status_code: 200, body: "{\"uri\":\"at://did:plc:u5cwb2mwiv2bfq53cjufe6yn/app.bsky.feed.post/3k4duaz5vfs2b\",\"cid\":\"bafyreibjifzpqj6o6wcq3hejh7y4z4z2vmiklkvykc57tw3pcbx3kxifpm\"}"}}end,
-          produce_post: fn _e -> {} end] do
-            RssClient.add_records_to_db(rss_data())
-            posts = Botflow.push_unpublished_messages("@JCParking", "a", "b")
-            bsky_posts = GovRepublish.CreatedBskyRecord|> GovRepublish.Repo.all()
-            assert Enum.count(posts) == 2
-            assert Enum.count(bsky_posts) == 2
-          end
-
+      login_flow: fn _a, _b -> {:ok, %{}} end do
+      with_mock BlueskyClient,
+        post: fn _c, _d ->
+          {:ok,
+           %HTTPoison.Response{
+             status_code: 200,
+             body:
+               "{\"uri\":\"at://did:plc:u5cwb2mwiv2bfq53cjufe6yn/app.bsky.feed.post/3k4duaz5vfs2b\",\"cid\":\"bafyreibjifzpqj6o6wcq3hejh7y4z4z2vmiklkvykc57tw3pcbx3kxifpm\"}"
+           }}
+        end,
+        produce_post: fn _e -> {} end do
+        RssClient.add_records_to_db(rss_data())
+        {:ok ,posts} = Botflow.push_unpublished_messages("@JCParking", "a", "b")
+        bsky_posts = GovRepublish.CreatedBskyRecord |> GovRepublish.Repo.all()
+        assert Enum.count(posts) == 2
+        assert Enum.count(bsky_posts) == 2
       end
-
     end
-
+  end
 end

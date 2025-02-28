@@ -1,5 +1,4 @@
 defmodule SqliteClient do
-
   @doc """
   Helper function that will insert an arbitrary record into the database.
   """
@@ -24,10 +23,10 @@ defmodule SqliteClient do
   """
   def update_record(original_data, struct_data) do
     changeset = Ecto.Changeset.change(original_data, struct_data)
+
     case changeset.valid? do
       true -> GovRepublish.Repo.update(changeset)
       false -> {:error, changeset.errors}
     end
   end
-
 end

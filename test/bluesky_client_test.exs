@@ -38,13 +38,13 @@ defmodule BlueskyClientTest do
   end
 
   for {input, expected} <- [
-    {200, :ok},
-    {299, :ok},
-    {300, :error},
-    {400, :error},
-    {500, :error},
-    {nil, :error}
-  ] do
+        {200, :ok},
+        {299, :ok},
+        {300, :error},
+        {400, :error},
+        {500, :error},
+        {nil, :error}
+      ] do
     test "Sanity check with post for input #{input}" do
       with_mock Poison,
         encode!: fn _a -> {} end do
@@ -56,25 +56,26 @@ defmodule BlueskyClientTest do
               {:error, %HTTPoison.Error{}}
             end
           end do
-            # we need the most minimal log in doc to test this funct
-            log_in_data = %{
-              "accessJwt"=>"123",
-              "did"=> "did:plc:123",
-              "didDoc"=>%{
-                "service"=>[
-                  %{
-                    "id" => "#atproto_pds",
-                    "serviceEndpoint" => "https://polypore.us-west.host.bsky.network",
-                    "type" => "AtprotoPersonalDataServer"
-                  }
-                ]
-              }
+          # we need the most minimal log in doc to test this funct
+          log_in_data = %{
+            "accessJwt" => "123",
+            "did" => "did:plc:123",
+            "didDoc" => %{
+              "service" => [
+                %{
+                  "id" => "#atproto_pds",
+                  "serviceEndpoint" => "https://polypore.us-west.host.bsky.network",
+                  "type" => "AtprotoPersonalDataServer"
+                }
+              ]
             }
-            post_data = %{}
-            {success, _} = BlueskyClient.post(log_in_data, post_data)
-            assert success == unquote(expected)
-          end
+          }
+
+          post_data = %{}
+          {success, _} = BlueskyClient.post(log_in_data, post_data)
+          assert success == unquote(expected)
         end
+      end
     end
   end
 end
