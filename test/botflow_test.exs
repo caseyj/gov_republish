@@ -87,7 +87,7 @@ defmodule BotflowTest do
         end,
         produce_post: fn _e -> {} end do
         RssClient.add_records_to_db(rss_data())
-        {:ok ,posts} = Botflow.push_unpublished_messages("@JCParking", "a", "b")
+        {:ok, posts} = Botflow.push_unpublished_messages("@JCParking", "a", "b")
         bsky_posts = GovRepublish.CreatedBskyRecord |> GovRepublish.Repo.all()
         assert Enum.count(posts) == 2
         assert Enum.count(bsky_posts) == 2

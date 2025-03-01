@@ -18,8 +18,8 @@ defmodule Botflow do
   Given a raw feed of posts, and a valid log in document, format and push each post to bluesky
   """
   def push_msgs(postable_data, bluesky_login) do
-
     Enum.reduce(postable_data, %{:ok => [], :fail => []}, fn data, acc ->
+      # TODO: hardcode for now
       Process.sleep(5000)
       cast_data = BlueskyClient.produce_post(data)
 
