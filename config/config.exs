@@ -18,9 +18,9 @@ config :gov_republish, Oban,
     {Oban.Plugins.Cron,
      crontab: [
        {"*/15 * * * *", GovRepublish.Workers.RssReadWorker,
-        args: %{"settings_file" => "config/secrets/jcparking_bot.json"}},
+        max_attempts: 1, args: %{"settings_file" => "config/secrets/jcparking_bot.json"}},
        {"*/20 * * * *", GovRepublish.Workers.BlueskyPostWorker,
-        args: %{"settings_file" => "config/secrets/jcparking_bot.json"}}
+        max_attempts: 1, args: %{"settings_file" => "config/secrets/jcparking_bot.json"}}
      ]}
   ]
 

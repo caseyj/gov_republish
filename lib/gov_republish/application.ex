@@ -7,6 +7,8 @@ defmodule GovRepublish.Application do
 
   @impl true
   def start(_type, _args) do
+    Oban.Telemetry.attach_default_logger(encode: false, level: :debug)
+
     children = [
       # Starts a worker by calling: DataCollector.Worker.start_link(arg)
       GovRepublish.Repo,

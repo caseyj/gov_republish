@@ -16,7 +16,19 @@ defmodule GovRepublish.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger]
+      mod: {GovRepublish.Application, []},
+      applications: [
+        :oban,
+        :ecto,
+        :saxy,
+        :date_time_parser,
+        :httpoison,
+        :poison,
+        :jason,
+        :ecto_sqlite3,
+        :hackney,
+        :mock
+      ]
     ]
   end
 

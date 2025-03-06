@@ -1,4 +1,8 @@
 defmodule RssClient do
+  @moduledoc """
+  Functions defined here assist with getting data from an RSS feed that is fed either by a file location or a URL.
+  """
+
   @doc """
   Helper function that handles getting an RSS document from a URL.
 
@@ -8,6 +12,13 @@ defmodule RssClient do
     Utils.decide_http_success(endpoint, HTTPoison.get(endpoint))
   end
 
+  @spec _get_rss_feed_file(
+          binary()
+          | maybe_improper_list(
+              binary() | maybe_improper_list(any(), binary() | []) | char(),
+              binary() | []
+            )
+        ) :: {:error, <<_::64, _::_*8>>} | {:ok, binary()}
   @doc """
   Gets the RSS data from a file and returns a tuple with the success status and data as a string.
   """
