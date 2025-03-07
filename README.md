@@ -58,7 +58,7 @@ config :gov_republish, Oban,
 }
 ```
 
-### Configure Data Ingestion
+### Configure Posting
 Currently the implementation for the worker responsible for posting data to BlueSky is located at [lib/gov_republish/workers/bluesky_post_worker.ex](lib/gov_republish/workers/bluesky_post_worker.ex). 
 
 This worker takes in a single configuration item which a JSON file contains the author's Twitter handle of a feed they would like to pust to BlueSky, as well as the credential pair for BlueSky.  This must be delivered in a JSON file, where the key-value pairs are at the root of the root object as defined in the examples below titled Configuration JSON File.
