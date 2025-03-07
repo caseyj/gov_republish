@@ -6,11 +6,35 @@ GovRepublish requires a single working pair of credentials to "that former bird 
 
 ## Installation
 
+### Overview of Pre-Requisites
+There are three main tools you will need to have running in order to run this project.
+- Docker
+- Docker-Compose
+- Elixir 1.16.1
+
 ### Elixir and the Erlang Runtime
 
 This project is built using Elixir 1.16.1
 
 You may find installation instructions for the Elixir Language and the runtime environment [here](https://elixir-lang.org/install.html)
+
+### Docker and Docker Compose
+
+#### Docker
+This project requires running a third party provided set of container images that will call APIs on the twitter website. 
+
+Ensure you have Docker installed on your machine. 
+
+The simplest way is [Docker Desktop](https://docs.docker.com/desktop/)
+Alternatives include [podman](https://podman.io/docs/installation)
+For mac you may attempt to use [colima](https://marczin.dev/blog/macos-docker-setup/)
+
+#### Docker Compose
+Docker Compose is required to run the docker-compose compliant YAML in the `infra` directory. 
+
+This plug-in may not be included in your installation of Docker so you will need to check that it is installed. 
+
+The [instructions on this site](https://docs.docker.com/compose/install/) will walk you  through your choice of system's install instructions.
 
 ### Using the repository
 Not currently available on Hexdocs. Installation instructions are as follows
@@ -27,7 +51,11 @@ cd gov_republish
 ```bash
 mix deps.get
 ```
-4. Follow instructions to set up the minimum infrastructure in `infra/nitter`
+4. Make sure the local SQLite database is setup and migrated
+``` bash
+mix ecto.migrate
+```
+5. Follow instructions to set up the minimum infrastructure in `infra/nitter`
 
 
 ## Configuration
