@@ -6,6 +6,13 @@ GovRepublish requires a single working pair of credentials to "that former bird 
 
 ## Installation
 
+### Elixir and the Erlang Runtime
+
+This project is built using Elixir 1.16.1
+
+You may find installation instructions for the Elixir Language and the runtime environment [here](https://elixir-lang.org/install.html)
+
+### Using the repository
 Not currently available on Hexdocs. Installation instructions are as follows
 
 1. Clone this repository
