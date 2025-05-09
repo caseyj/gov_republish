@@ -9,7 +9,7 @@ defmodule BlueskyClient do
   Returns a string with data in it
   """
   def format_post_text(post_data) do
-    "Post by #{Map.get(post_data, "author")} made on #{Map.get(post_data, "publish_timestamp")}\n\n#{Map.get(post_data, "content")}"
+    "Post by #{Map.get(post_data, "author")} made on #{}\n\n#{}"
   end
 
   @doc """
@@ -17,8 +17,8 @@ defmodule BlueskyClient do
   """
   def produce_post(post_data) do
     %{
-      "text" => format_post_text(post_data),
-      "createdAt" => DateTime.utc_now() |> DateTime.to_iso8601(),
+      "text" => Map.get(post_data, "content"),
+      "createdAt" => Map.get(post_data, "publish_timestamp"),
       "$type" => "app.bsky.feed.post"
     }
   end
@@ -27,27 +27,45 @@ defmodule BlueskyClient do
   Performs the actual post behavior against bluesky with working log in data and the data to post
   """
   def post(log_in_data, post_data) do
+    authenticated_request(
+      log_in_data,
+      AtProto.Repo.create_record(
+        Map.get(log_in_data, "did"),
+        "app.bsky.feed.post",
+        post_data
+      )
+    )
+  end
+
+  @doc """
+  Handles making authenticated HTTP requests for the system.
+
+  Deals with the specifics of GET v POST and expects data formats from lib/AtProto
+  """
+  def authenticated_request(log_in_data, request_data) do
     headers = %{
       "Authorization" => "Bearer #{Map.get(log_in_data, "accessJwt")}",
       "content-type" => "application/json"
     }
 
-    post_data_ammended = %{
-      "repo" => Map.get(log_in_data, "did"),
-      "collection" => "app.bsky.feed.post",
-      "record" => post_data
-    }
-
     url =
-      "#{AtProto.IdentityResolution.get_service(Map.get(log_in_data, "didDoc"))}/xrpc/com.atproto.repo.createRecord"
+      "#{AtProto.IdentityResolution.get_service(Map.get(log_in_data, "didDoc"))}#{Map.get(request_data,:uri)}"
 
-    {success, response} =
-      HTTPoison.post(
-        url,
-        Poison.encode!(post_data_ammended),
+    {success, response} = case Map.get(request_data, :method) do
+      :GET -> HTTPoison.get(
+        URI.decode_query(url)
+        |> Map.merge(Map.get(request_data, :request))
+        |> URI.encode_query(),
         headers
       )
-
+      :POST ->HTTPoison.post(
+        url,
+        Poison.encode!(Map.get(request_data, :request)),
+        headers
+      )
+      _ -> {:error, "Unsupported method"}
+    end
     Utils.decide_http_success(url, {success, response})
   end
+
 end
