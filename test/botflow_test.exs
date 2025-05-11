@@ -67,7 +67,7 @@ defmodule BotflowTest do
       {post,
        "{\"uri\":\"at://did:plc:u5cwb2mwiv2bfq53cjufe6yn/app.bsky.feed.post/3k4duaz5vfs2b\",\"cid\":\"bafyreibjifzpqj6o6wcq3hejh7y4z4z2vmiklkvykc57tw3pcbx3kxifpm\"}"}
 
-    Botflow.update_successful_message(input)
+    Botflow.update_successful_message_parse(input)
     created_records = GovRepublish.CreatedBskyRecord |> GovRepublish.Repo.all()
     assert Enum.count(created_records) == 1
     assert post.id == hd(created_records).rss_post_id

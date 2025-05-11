@@ -37,7 +37,7 @@ defmodule GovRepublish.MixProject do
     [
       {:saxy, "~> 1.6"},
       {:date_time_parser, "~> 1.2.0"},
-      {:mock, "~> 0.3.0", only: :test},
+      {:mock, "~> 0.3.0"},
       {:httpoison, "~> 2.0"},
       {:poison, "~> 6.0"},
       {:ecto_sqlite3, "~> 0.17"},

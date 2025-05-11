@@ -14,6 +14,6 @@ defmodule GovRepublish.RssPost do
   def changeset(rss_post, params \\ %{}) do
     rss_post
     |> Ecto.Changeset.cast(params, [:content, :author, :publish_timestamp, :post_id])
-    |> Ecto.Changeset.validate_required([:content, :author, :publish_timestamp, :post_id])
+    |> Ecto.Changeset.validate_required([:content, :author, :publish_timestamp])
   end
 end

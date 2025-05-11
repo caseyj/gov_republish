@@ -3,14 +3,7 @@ defmodule BlueskyClient do
   Helper functions that will format data and execute calls against bluesky.
   """
 
-  @doc """
-  Formats a text post given a map with fields `publish_timestamp`, `content`, and `author`.
-
-  Returns a string with data in it
-  """
-  def format_post_text(post_data) do
-    "Post by #{Map.get(post_data, "author")} made on #{}\n\n#{}"
-  end
+  require Logger
 
   @doc """
   Produces the post document using the input post data
@@ -53,9 +46,7 @@ defmodule BlueskyClient do
 
     {success, response} = case Map.get(request_data, :method) do
       :GET -> HTTPoison.get(
-        URI.decode_query(url)
-        |> Map.merge(Map.get(request_data, :request))
-        |> URI.encode_query(),
+        url,
         headers
       )
       :POST ->HTTPoison.post(

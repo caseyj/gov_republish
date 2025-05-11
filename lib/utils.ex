@@ -115,4 +115,14 @@ defmodule Utils do
   def map_append_lists(map, key, list) do
     Map.put(map, key, Map.get(map, key, []) ++ list)
   end
+
+  def remove_nils_from_map(map) do
+    Enum.reduce(map, %{}, fn ({k, v}, acc) ->
+      if v != nil do
+        Map.put(acc,k, v)
+      else
+        acc
+      end
+    end)
+  end
 end
