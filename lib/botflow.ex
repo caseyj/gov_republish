@@ -113,9 +113,9 @@ defmodule Botflow do
             }
         }
       ]
-    else
-      acc
-    end
+      else
+        acc
+      end
     end)
   end
 

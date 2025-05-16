@@ -6,7 +6,7 @@ defmodule Mix.Tasks.Start do
 
   @impl Mix.Task
   def run(_args) do
-    Mix.shell().cmd("cd infra/nitter; docker-compose up -d", [])
+    #Mix.shell().cmd("cd infra/nitter; docker-compose up -d", [])
     Mix.Tasks.Run.run(["--no-halt"])
   end
 end
