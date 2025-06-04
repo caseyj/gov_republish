@@ -6,7 +6,7 @@ defmodule Workers.BlueskyPostWorkerTest do
     with_mock File,
       read: fn _a ->
         {:ok,
-         "{\"author\": \"@JCParking\",\"bluesky-user\": \"bluesky_jcparking.freemason593@passmail.net\",\"bluesky-pw\": \"Closure8-Budget7-Puzzle8-Enzyme1-Unthread5\"}"}
+         "{\"author\": \"@JCParking\",\"bluesky-user\": \"email\",\"bluesky-handle\": \"hello\",\"bluesky-pw\": \"hello\"}"}
       end do
       with_mock Botflow,
         push_unpublished_messages: fn _a, _b, _c -> {:ok, []} end do

@@ -76,4 +76,17 @@ defmodule UtilsTest do
     assert Utils.map_append_lists(%{:a => []}, :a, [1]) == %{:a => [1]}
     assert Utils.map_append_lists(%{:a => [1, 2]}, :a, [4, 5]) == %{:a => [1, 2, 4, 5]}
   end
+
+  for {required_keys, expected_atom} <- [
+    {[:a, :b], :ok},
+    {[:a], :ok},
+    {[:b], :ok},
+    {[:c], :error},
+    {[], :ok},
+  ] do
+    test "Show Utils.map_contains_required_keys works for keys #{Enum.join(required_keys, ", ")}" do
+      {result, _} =  Utils.map_contains_required_keys(%{:a=>"hello", :b=>"world"}, unquote(required_keys))
+      assert result == unquote(expected_atom)
+    end
+  end
 end

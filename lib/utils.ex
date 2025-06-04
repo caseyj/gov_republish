@@ -125,4 +125,24 @@ defmodule Utils do
       end
     end)
   end
+
+  @doc """
+  Function that checks a map has all required keys.
+  """
+  def map_contains_required_keys(source_map, required_keys) do
+    key_list = Map.keys(source_map)
+    missing_keys = Enum.reduce(required_keys, [], fn (key, acc) ->
+      if Enum.member?(key_list, key) do
+        acc
+      else
+        acc++[key]
+      end
+    end)
+    if Enum.count(missing_keys) == 0 do
+      {:ok, source_map}
+    else
+      {:error, "Keys missing: #{Enum.join(missing_keys, ", ")}"}
+    end
+  end
+
 end
